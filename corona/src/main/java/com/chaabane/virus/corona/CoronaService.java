@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -39,13 +38,14 @@ public class CoronaService {
         for (CSVRecord record : CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(read)) {
             LocationStats locationStats = new LocationStats();
             locationStats.setState(record.get("Province/State"));
+            locationStats.setLatitude(Double.parseDouble(record.get("Lat")));
+            locationStats.setLongtitude(Double.parseDouble(record.get("Long")));
             locationStats.setCountry(record.get("Country/Region"));
             locationStats.setLastTotalCases(Integer.parseInt(record.get(record.size()-1)));
             tempList.add(locationStats);
             log.info(locationStats.toString());
         }
         return tempList;
-
     }
 
 }

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Virus from "./virus.png";
 import "./App.css";
 import axios from "axios";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 class App extends Component {
   state = {
@@ -21,6 +23,14 @@ class App extends Component {
       console.log("something went wrong with the called server");
     }
   }
+
+  doSomething = () => {
+    let map = L.map("map").setView([0, 0], 1);
+    L.tileLayer(
+      "https://api.maptiler.com/maps/basic-2154/tiles.json?key=EhU44wnux0s5MUYA8ivM"
+    ).addTo(map);
+    return map;
+  };
 
   render() {
     return (
@@ -71,7 +81,13 @@ class App extends Component {
                         data.state
                       )}
                     </td>
-                    <th>{data.country}</th>
+                    <th>
+                      {data.country === "Israel" ? (
+                        <b>Palestine</b>
+                      ) : (
+                        data.country
+                      )}
+                    </th>
                     <td>{data.lastTotalCases}</td>
                   </tr>
                 ))}
@@ -79,6 +95,7 @@ class App extends Component {
             </table>
           )}
         </div>
+        <div className="map">{() => this.doSomething()}</div>
       </div>
     );
   }
