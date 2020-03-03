@@ -14,11 +14,13 @@ public class CoronaController {
 
     @Autowired
     private CoronaService coronaService;
+    @Autowired
+    private CoronaResponse coronaResponse;
 
     @CrossOrigin(origins = "*")
     @GetMapping("/status")
     public ResponseEntity<CoronaResponse> getStatus(){
-        CoronaResponse coronaResponse = new CoronaResponse();
+        //CoronaResponse coronaResponse = new CoronaResponse();
         try {
             coronaResponse.setList(coronaService.fetchCoronaVirusData());
             coronaResponse.setTotateff(coronaResponse.getList().stream().mapToInt(e -> e.getLastTotalCases()).sum());

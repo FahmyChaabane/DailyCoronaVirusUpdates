@@ -3,13 +3,23 @@ import Virus from "./virus.png";
 import "./App.css";
 import axios from "axios";
 import L from "leaflet";
+import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png")
+});
 
 class App extends Component {
   state = {
     data: {
       list: [],
-      num: 0
+      num: 0,
+      lastUpdate: ""
     }
   };
 
@@ -24,15 +34,8 @@ class App extends Component {
     }
   }
 
-  doSomething = () => {
-    let map = L.map("map").setView([0, 0], 1);
-    L.tileLayer(
-      "https://api.maptiler.com/maps/basic-2154/tiles.json?key=EhU44wnux0s5MUYA8ivM"
-    ).addTo(map);
-    return map;
-  };
-
   render() {
+    const position = [47, 1];
     return (
       <div className="App">
         <header className="App-header">
@@ -51,14 +54,34 @@ class App extends Component {
           </a>
         </header>
         <div className="card text-center">
+          <div className="card-header text-muted" />
+
           <div className="card-body">
             <h5 className="card-title">
               Total number of confirmed effected people
             </h5>
             <b className="card-text">{this.state.data.totateff}</b>
           </div>
-          <div className="card-footer text-muted"></div>
+          <div className="card-footer text-muted">
+            Last update was on: {this.state.data.lastUpdate}
+          </div>
         </div>
+        <hr />
+        <Map className="container" center={position} zoom={3}>
+          <TileLayer
+            url="https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=EhU44wnux0s5MUYA8ivM"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          />
+          {this.state.data.list.map((el, index) => (
+            <Marker key={index} position={[el.latitude, el.longtitude]}>
+              {" "}
+              <Popup>
+                this state has: <br /> {el.lastTotalCases} effected.
+              </Popup>
+            </Marker>
+          ))}
+        </Map>
+        <hr />
         <div>
           {this.state.data.list.length === 0 ? (
             <code>Loading data...</code>
@@ -76,18 +99,18 @@ class App extends Component {
                   <tr key={index}>
                     <td>
                       {data.state === "" ? (
-                        <p style={{ color: "red" }}>Not Applicable</p>
+                        <small style={{ color: "red" }}>Not Applicable</small>
                       ) : (
                         data.state
                       )}
                     </td>
-                    <th>
+                    <td>
                       {data.country === "Israel" ? (
                         <b>Palestine</b>
                       ) : (
                         data.country
                       )}
-                    </th>
+                    </td>
                     <td>{data.lastTotalCases}</td>
                   </tr>
                 ))}
@@ -95,7 +118,6 @@ class App extends Component {
             </table>
           )}
         </div>
-        <div className="map">{() => this.doSomething()}</div>
       </div>
     );
   }

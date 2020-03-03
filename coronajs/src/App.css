@@ -2,8 +2,9 @@
   text-align: center;
 }
 
-.map {
-  height: 100vh;
+.leaflet-container {
+  width: 75%;
+  height: 40vh;
 }
 
 .App-logo {

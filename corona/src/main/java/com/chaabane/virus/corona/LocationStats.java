@@ -7,6 +7,7 @@ public class LocationStats {
     private double latitude;
     private double longtitude;
 
+
     public double getLatitude() {
         return latitude;
     }
