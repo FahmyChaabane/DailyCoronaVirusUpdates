@@ -12,4 +12,9 @@ public class TemplateConfig {
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }
+
+    @Bean
+    public CoronaResponse coronaResponseFactory() {
+        return new CoronaResponse();
+    }
 }

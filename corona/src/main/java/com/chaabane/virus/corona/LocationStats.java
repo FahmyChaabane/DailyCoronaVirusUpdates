@@ -7,6 +7,16 @@ public class LocationStats {
     private double latitude;
     private double longtitude;
 
+    public LocationStats() {
+    }
+
+    public LocationStats(String state, String country, int lastTotalCases, double latitude, double longtitude) {
+        this.state = state;
+        this.country = country;
+        this.lastTotalCases = lastTotalCases;
+        this.latitude = latitude;
+        this.longtitude = longtitude;
+    }
 
     public double getLatitude() {
         return latitude;

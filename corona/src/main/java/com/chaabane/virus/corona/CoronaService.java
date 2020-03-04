@@ -31,11 +31,7 @@ public class CoronaService {
         log.info("started here ----------");
         String response = restTemplate.getForObject(
                 lien, String.class);
-        /*
-        List<String> items = Arrays.asList(response.split("\\r?\\n"));
-        for (String str : items) {
-            log.info(str);
-        }*/
+
 
         StringReader read = new StringReader(response);
         CSVParser csvRecords = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(read);

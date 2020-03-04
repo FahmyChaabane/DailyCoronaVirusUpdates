@@ -5,11 +5,19 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public class CoronaResponse {
     private List<LocationStats> list= null;
     private int totateff = 0;
     public String lastUpdate;
+
+    public CoronaResponse() {
+    }
+
+    public CoronaResponse(List<LocationStats> list, int totateff, String lastUpdate) {
+        this.list = list;
+        this.totateff = totateff;
+        this.lastUpdate = lastUpdate;
+    }
 
     public String getLastUpdate() {
         return lastUpdate;
