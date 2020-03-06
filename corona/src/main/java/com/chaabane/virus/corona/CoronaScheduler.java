@@ -27,7 +27,7 @@ public class CoronaScheduler implements WebSocketMessageBrokerConfigurer {
     @Autowired
     private CoronaResponse coronaResponse;
 
-    @Scheduled(cron = "0 07 00 * * ?")
+    @Scheduled(cron = "0 25 00 * * ?")
     @SendTo("/topic/corona")
     public CoronaResponse greeting() throws Exception {
         Thread.sleep(1000); // simulated delay
@@ -44,7 +44,7 @@ public class CoronaScheduler implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/gs-guide-websocket").setAllowedOrigins("http://localhost:3000").withSockJS();
+        registry.addEndpoint("/gs-guide-websocket").setAllowedOrigins("*").withSockJS();
     }
 
 }

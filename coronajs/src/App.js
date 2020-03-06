@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import Virus from "./virus.png";
 import "./App.css";
-import axios from "axios";
+//import axios from "axios";
 import L from "leaflet";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import SockJS from "sockjs-client";
-import StompJs from "@stomp/stompjs";
+//import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -26,34 +26,12 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    /*
-    const client = new StompJs.Client({
-      brokerURL: "http://localhost:8080/gs-guide-websocket",
-      connectHeaders: null,
-      debug: function(str) {
-        console.log(str);
-      },
-      reconnectDelay: 5000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000
-    });
-
-    client.onConnect = frame => {
+    const url = "ws://localhost:8080/gs-guide-websocket/websocket";
+    let client = Stomp.client(url);
+    client.connect("", frame => {
+      console.log("Connected: " + frame);
       client.subscribe("/topic/corona", data => {
-        this.setState({ data });
-        console.log("body of the request", data);
-      });
-    };
-  
-
-    client.activate();
-    */
-
-    var client = StompJs.Stomp.over(function() {
-      return new WebSocket("http://localhost:8080/gs-guide-websocket");
-    });
-    client.onConnect(frame => {
-      client.subscribe("/topic/corona", data => {
+        console.log("right here");
         this.setState({ data });
         console.log("body of the request", data);
       });
