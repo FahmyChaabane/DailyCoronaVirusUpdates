@@ -26,17 +26,64 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    const url = "ws://localhost:8080/gs-guide-websocket/websocket";
-    let client = Stomp.client(url);
-    client.connect("", frame => {
-      console.log("Connected: " + frame);
-      client.subscribe("/topic/corona", data => {
-        console.log("right here");
-        this.setState({ data });
-        console.log("body of the request", data);
-      });
+    /*
+    const client = new Stomp.client({
+      brokerURL: "ws://localhost:8080/gs-guide-websocket",
+
+      debug: function(str) {
+        console.log(str);
+      },
+      reconnectDelay: 5000,
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000
     });
 
+    client.onConnect = function(frame) {
+      console.log("onConnect");
+
+      client.subscribe("/topic/corona", message => {
+        console.log(message);
+      });
+    };
+
+    client.activate();
+    */
+
+    let client = new Stomp.client("ws://localhost:8080/gs-guide-websocket");
+
+    client.configure({
+      brokerURL: "ws://localhost:8080/gs-guide-websocket",
+      onConnect: () => {
+        console.log("onConnect");
+
+        client.subscribe("/topic/corona", message => {
+          console.log(message);
+        });
+      },
+      // Helps during debugging, remove in production
+      debug: str => {
+        console.log(new Date(), str);
+      }
+    });
+
+    client.activate();
+
+    /*
+    const url = "ws://localhost:8080/gs-guide-websocket";
+    let client = Stomp.client(url);
+    client.connect({}, frame => {
+      console.log("Connected: " + frame);
+      client.subscribe("/topic/corona", data => {
+        if (data.body) {
+          console.log("WHAAAAAAAAAAAAAAAAAAAAt");
+          this.setState({ data: JSON.parse(data.body).content });
+          console.log("body of the request", data);
+        } else {
+          alert("got empty message");
+        }
+      });
+    });
+    */
     /*
     const socket = new SockJS("http://localhost:8080/gs-guide-websocket");
     stompClient.connect({}, frame => {
@@ -48,7 +95,6 @@ class App extends Component {
       });
     });
     */
-
     /*
     console.log("App.jsx");
     try {
