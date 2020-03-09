@@ -52,12 +52,13 @@ class App extends Component {
     let client = new Stomp.client("ws://localhost:8080/gs-guide-websocket");
 
     client.configure({
-      brokerURL: "ws://localhost:8080/gs-guide-websocket",
       onConnect: () => {
         console.log("onConnect");
 
         client.subscribe("/topic/corona", message => {
-          console.log(message);
+          console.log(message.body);
+          console.log(JSON.parse(message.body));
+          this.setState({ data: JSON.parse(message.body) });
         });
       },
       // Helps during debugging, remove in production

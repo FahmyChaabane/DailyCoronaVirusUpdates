@@ -26,8 +26,7 @@ public class CoronaScheduler implements WebSocketMessageBrokerConfigurer {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @Scheduled(cron = "0 30 23 * * ?")
-    @SendTo("/topic/corona")
+    @Scheduled(cron = "0 05 21 * * ?")
     public void greeting() throws Exception {
         //Thread.sleep(1000); // simulated delay
             coronaResponse.setList(coronaService.fetchCoronaVirusData());
